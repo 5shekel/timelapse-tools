@@ -104,7 +104,12 @@ class TimelapseTools:
         assert(args.src)
         assert(args.dst)
 
-        TimelapseTools.ffmpeg_join(os.path.join(args.src, '%05d.png'), args.dst)
+        def get_ext():
+            files = glob(os.path.join(args.src, '*'))
+
+            return os.path.splitext(files[0])[1]
+
+        TimelapseTools.ffmpeg_join(os.path.join(args.src, '%05d' + get_ext()), args.dst)
 
     @staticmethod
     def remove_frames(args):
