@@ -34,11 +34,11 @@ A directory of 1000 images, from DSC_0112.JPG to DSC_1111.JPG:
 Run squash to prepare them for ffmpeg:
 
     # ./tt squash --src=my_images
-    myimages/DSC_0112.JPG -> myimages/00001.png
-    myimages/DSC_0113.JPG -> myimages/00002.png
-    myimages/DSC_0114.JPG -> myimages/00003.png
+    myimages/DSC_0112.JPG -> myimages/00001.JPG
+    myimages/DSC_0113.JPG -> myimages/00002.JPG
+    myimages/DSC_0114.JPG -> myimages/00003.JPG
     ...
-    myimages/DSC_1111.JPG -> myimages/01000.png
+    myimages/DSC_1111.JPG -> myimages/01000.JPG
 
 You have deicded that 1000 frames will make your video too long. You want to drop it down to 500 frames:
 
@@ -54,18 +54,18 @@ At this stage you can review how many files will be removed, and have a last cha
     Removing myimages/00001.png
     Removing myimages/00003.png
     Removing myimages/00005.png
-    Removing myimages/00007.png 
+    Removing myimages/00007.png
     ...
     Removing myimages/00999.png
 
 You will need to squash again:
 
     # ./tt squash --src=my_images
-    myimages/00002.png -> myimages/00001.png 
-    myimages/00004.png -> myimages/00002.png 
-    myimages/00006.png -> myimages/00003.png 
+    myimages/00002.png -> myimages/00001.png
+    myimages/00004.png -> myimages/00002.png
+    myimages/00006.png -> myimages/00003.png
     ...
-    myimages/01000.png -> myimages/00500.png 
+    myimages/01000.png -> myimages/00500.png
 
 Now we can encode them:
 
@@ -78,7 +78,7 @@ Now we can encode them:
     Output #0, mp4, to 'myvideo.mp4':
         Stream #0.0: Video: libx264, yuv420p, 1920x1080, q=10-51, 200 kb/s, 25 tbn, 25 tbc
     Press [q] to stop encoding
-    frame=   60 fps= 14 q=25.0 size=     299kB time=10000000000.00 bitrate=   0.0kbits/s    
+    frame=   60 fps= 14 q=25.0 size=     299kB time=10000000000.00 bitrate=   0.0kbits/s
 
 The default ffmpeg settings were appropriate for me, but you can change them by modifying tt itself. It basically is a high quality H.264 video with no audio.
 
