@@ -8,10 +8,7 @@ import os
 import re
 import math
 import argparse
-import tempfile
 from glob import glob
-
-from PIL import Image
 
 
 class TimelapseTools:
@@ -51,7 +48,6 @@ class TimelapseTools:
         args.dst = os.path.expanduser(args.dst)
 
         if os.path.isdir(args.src):
-            p = os.path.join(args.src, '*')
             files = glob(os.path.join(args.src, '*'))
         else:
             files = glob(args.src)
@@ -65,7 +61,7 @@ class TimelapseTools:
 
         for file in files:
             if not os.path.isfile(file):
-                print('{} is not a file'.format(file));
+                print('{} is not a file'.format(file))
                 continue
 
             # Spit out the frames
@@ -80,7 +76,7 @@ class TimelapseTools:
                 n += 1
                 new_frame_name = os.path.join(args.dst, '%05i.png' % n)
                 os.rename(frame_name, new_frame_name)
-        
+
     @staticmethod
     def squash(args):
 
@@ -123,41 +119,13 @@ class TimelapseTools:
 
         print('will remove', to_remove, 'images')
         print('will remove every', remove_every, 'images')
-        input('Hit control-c to cancel, or enter to continue: ');
-        
+        input('Hit control-c to cancel, or enter to continue: ')
+
         for n, frame_name in enumerate(files):
             if n % remove_every:
                 continue
             print('Removing', frame_name)
             os.unlink(frame_name)
-
-    @staticmethod
-    def brightest(args):
-
-        assert(args.src)
-        assert(args.dst)
-        
-        files = glob(os.path.join(args.src, '*'))
-        im = Image.open(files[0])
-        bytes = im.size[0] * im.size[1] * 3
-        t = uint64
-        images = 0
-
-        final = zeros(bytes, dtype=t)
-
-        for f in files:
-            print(f)
-            im = Image.open(f)
-            imarray = fromstring(im.tostring(), dtype=uint8)
-            imarray = imarray.astype(t)
-            finalimage += imarray
-            images += 1
-
-        finalimage /= images
-
-        limage = finalimage.astype(uint8)
-        im = Image.fromstring(mode, dims, finalimage.tostring())
-        im.save(args.dst)
 
 
 def parser():
@@ -169,6 +137,7 @@ def parser():
     p.add_argument('--target-frames', metavar='FRAMES')
     return p.parse_args()
 
+
 def main():
     args = parser()
     func = getattr(TimelapseTools, args.command)
@@ -176,4 +145,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
