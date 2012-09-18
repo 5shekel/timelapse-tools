@@ -6,6 +6,7 @@ http://github.com/gak/timelapse-tools
 
 import os
 import re
+import sys
 import math
 import argparse
 from glob import glob
@@ -92,6 +93,7 @@ class TimelapseTools:
         for file in files:
             n += 1
             new_frame_name = os.path.join(args.src, '%05i.png' % n)
+
             print(file, '->', new_frame_name)
             os.rename(file, new_frame_name)
 
@@ -138,7 +140,25 @@ def parser():
     return p.parse_args()
 
 
+def check_ffmpeg():
+    def is_exe(fpath):
+        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+    for path in os.environ['PATH'].split(os.pathsep):
+        e = os.path.join(path, 'ffmpeg')
+
+        if is_exe(e):
+            return True
+
+    return False
+
+
 def main():
+    if not check_ffmpeg():
+        print 'ffmpeg executable not found.'
+
+        sys.exit(1)
+
     args = parser()
     func = getattr(TimelapseTools, args.command)
     func(args)
