@@ -149,19 +149,23 @@ def parser():
 def check_ffmpeg():
     def is_exe(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
+        
+        
+    os_name = os.getenv("OS")
     for path in os.environ['PATH'].split(os.pathsep):
-        e = os.path.join(path, 'ffmpeg')
+        if os_name == "Windows_NT":
+            e = os.path.join(path, 'ffmpeg.exe')
+        else:
+            e = os.path.join(path, 'ffmpeg')
 
         if is_exe(e):
             return True
 
     return False
 
-
 def main():
     if not check_ffmpeg():
-        print 'ffmpeg executable not found.'
+        print('ffmpeg executable not found.')
 
         sys.exit(1)
 
